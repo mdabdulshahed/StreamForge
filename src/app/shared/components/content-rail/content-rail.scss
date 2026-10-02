@@ -1,0 +1,46 @@
+:host {
+  display: block;
+}
+
+.nav-btn {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9999px;
+  color: var(--color-mist-200);
+  background: color-mix(in srgb, var(--color-mist-50) 8%, transparent);
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    opacity 0.2s;
+
+  &:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--color-mist-50) 16%, transparent);
+    color: var(--color-mist-50);
+  }
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: default;
+  }
+}
+
+.edge-fade {
+  position: absolute;
+  top: 3.25rem;
+  bottom: 1.25rem;
+  width: var(--gutter);
+  pointer-events: none;
+  transition: opacity 0.25s;
+
+  &--start {
+    left: 0;
+    background-image: linear-gradient(to right, var(--color-ink-950), transparent);
+  }
+
+  &--end {
+    right: 0;
+    background-image: linear-gradient(to left, var(--color-ink-950), transparent);
+  }
+}

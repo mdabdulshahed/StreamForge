@@ -1,0 +1,29 @@
+:host {
+  display: block;
+}
+
+.panel-heading {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.panel-subtitle {
+  margin-top: 0.375rem;
+  max-width: 40rem;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--color-mist-400);
+}
+
+.config-note {
+  margin-top: 1.25rem;
+  max-width: 40rem;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--color-mist-500);
+
+  strong {
+    color: var(--color-mist-300);
+  }
+}

@@ -1,0 +1,37 @@
+:host {
+  display: block;
+  min-width: 0;
+}
+
+/* Lift on hover. Kept on the anchor (not the poster) so the caption travels
+   with the artwork and the whole tile reads as one object. */
+.card {
+  will-change: transform;
+  transition: transform 0.3s var(--ease-out-soft);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .card:hover,
+  .card:focus-visible {
+    transform: translateY(-4px);
+  }
+
+  .card:hover .art,
+  .card:focus-visible .art {
+    transform: scale(1.06);
+  }
+}
+
+.pulse {
+  animation: card-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes card-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}

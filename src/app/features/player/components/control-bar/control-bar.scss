@@ -1,0 +1,271 @@
+:host {
+  display: block;
+}
+
+.bar {
+  padding: 2.5rem 0.75rem 0.75rem;
+  background: linear-gradient(to top, rgb(0 0 0 / 0.82) 0%, rgb(0 0 0 / 0.55) 55%, transparent 100%);
+}
+
+@media (min-width: 640px) {
+  .bar {
+    padding-inline: 1.25rem;
+    padding-bottom: 1rem;
+  }
+}
+
+.scrubber {
+  margin-bottom: 0.5rem;
+}
+
+/* Shared range-input reset: transparent native track/thumb chrome so our
+   painted `background` (see control-bar.ts `trackBackground`) shows through,
+   with a custom thumb layered on top. */
+%range-reset {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  cursor: pointer;
+  background-color: transparent;
+
+  &::-webkit-slider-runnable-track {
+    background: transparent;
+  }
+  &::-moz-range-track {
+    background: transparent;
+  }
+  &:focus-visible {
+    outline: 2px solid var(--color-ember-500);
+    outline-offset: 3px;
+  }
+}
+
+.scrub-input {
+  @extend %range-reset;
+  height: 0.375rem;
+  border-radius: 9999px;
+
+  &::-webkit-slider-thumb {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 0.8125rem;
+    height: 0.8125rem;
+    margin-top: -0.2rem;
+    border-radius: 9999px;
+    background: var(--color-mist-50);
+    box-shadow: 0 1px 4px rgb(0 0 0 / 0.45);
+    transition: transform 0.15s;
+  }
+  &::-moz-range-thumb {
+    width: 0.8125rem;
+    height: 0.8125rem;
+    border: none;
+    border-radius: 9999px;
+    background: var(--color-mist-50);
+    box-shadow: 0 1px 4px rgb(0 0 0 / 0.45);
+  }
+  &:hover::-webkit-slider-thumb {
+    transform: scale(1.2);
+  }
+}
+
+.controls-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.controls-left,
+.controls-right {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  min-width: 0;
+}
+
+.ctrl-btn {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  flex-shrink: 0;
+  border-radius: 9999px;
+  color: var(--color-mist-100);
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    opacity 0.2s;
+
+  &:hover:not(:disabled) {
+    background: rgb(255 255 255 / 0.14);
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+
+  &.is-active {
+    color: var(--color-ember-500);
+  }
+
+  .icon {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+}
+
+.quality-menu-wrap {
+  position: relative;
+}
+
+/* `position: fixed` lets this cover the whole viewport for outside-click
+   dismissal even though it's nested inside the bottom control bar. */
+.menu-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+}
+
+.quality-popover {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 0.5rem);
+  z-index: 41;
+  min-width: 9.5rem;
+  margin: 0;
+  padding: 0.375rem;
+  list-style: none;
+  border-radius: 0.75rem;
+  background: color-mix(in srgb, var(--color-ink-950) 92%, transparent);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 12px 32px -8px rgb(0 0 0 / 0.6);
+  border: 1px solid rgb(255 255 255 / 0.1);
+}
+
+.quality-option {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.5rem 0.625rem;
+  border-radius: 0.5rem;
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-mist-200);
+  transition: background-color 0.15s;
+  text-align: left;
+
+  &:hover {
+    background: rgb(255 255 255 / 0.1);
+  }
+
+  &.is-selected {
+    color: var(--color-mist-50);
+    font-weight: 600;
+  }
+
+  .check {
+    width: 0.875rem;
+    height: 0.875rem;
+    flex-shrink: 0;
+    color: var(--color-ember-500);
+  }
+}
+
+.ctrl-btn.primary .icon {
+  width: 1.375rem;
+  height: 1.375rem;
+}
+
+.spinner {
+  width: 1.125rem;
+  height: 1.125rem;
+  border-radius: 9999px;
+  border: 2px solid rgb(255 255 255 / 0.3);
+  border-top-color: var(--color-mist-50);
+  animation: control-bar-spin 0.8s linear infinite;
+}
+
+@keyframes control-bar-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.volume-group {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.volume-input {
+  @extend %range-reset;
+  width: 4.5rem;
+  height: 0.25rem;
+  border-radius: 9999px;
+  background: rgb(255 255 255 / 0.3);
+  display: none;
+
+  &::-webkit-slider-thumb {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 0.625rem;
+    height: 0.625rem;
+    border-radius: 9999px;
+    background: var(--color-mist-50);
+  }
+  &::-moz-range-thumb {
+    width: 0.625rem;
+    height: 0.625rem;
+    border: none;
+    border-radius: 9999px;
+    background: var(--color-mist-50);
+  }
+}
+
+@media (min-width: 640px) {
+  .volume-input {
+    display: block;
+  }
+}
+
+.time {
+  font-variant-numeric: tabular-nums;
+  font-size: 0.75rem;
+  color: var(--color-mist-300);
+  white-space: nowrap;
+}
+
+.rate-select select {
+  height: 2.25rem;
+  padding: 0 0.5rem;
+  border-radius: 0.5rem;
+  background: rgb(255 255 255 / 0.1);
+  color: var(--color-mist-100);
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: none;
+
+  &:hover {
+    background: rgb(255 255 255 / 0.16);
+  }
+}
+
+.rate-select select option {
+  color: #000;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

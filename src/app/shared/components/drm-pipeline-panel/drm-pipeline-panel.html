@@ -1,0 +1,13 @@
+<h3 class="panel-heading">How DRM protection works</h3>
+<p class="panel-subtitle">
+  The path an encrypted segment takes when a title requires content protection — the same
+  Encrypted Media Extensions pipeline every major streaming service relies on.
+</p>
+
+<sf-pipeline-stages [stages]="stages" />
+
+<p class="config-note">
+  DRM configuration in this app is <strong>{{ drmEnabled ? 'enabled' : 'disabled' }}</strong>. No
+  catalog title is actually encrypted, so this pipeline is never exercised end to end here — it's
+  documented rather than faked, the same rule the streaming pipeline above follows.
+</p>

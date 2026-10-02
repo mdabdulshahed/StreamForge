@@ -1,0 +1,62 @@
+<section class="group/rail relative py-2" [attr.aria-labelledby]="headingId()">
+  <header class="sf-gutter mb-3 flex items-end justify-between gap-4">
+    <div class="min-w-0">
+      <h2 [id]="headingId()" class="text-lg font-semibold tracking-tight sm:text-xl">
+        {{ heading() }}
+      </h2>
+      @if (subtitle(); as sub) {
+        <p class="mt-0.5 truncate text-sm text-mist-400">{{ sub }}</p>
+      }
+    </div>
+
+    <!-- Pointer-only paging. Keyboard and AT users scroll the list natively. -->
+    <div class="hidden shrink-0 items-center gap-1.5 md:flex" aria-hidden="true">
+      <button
+        type="button"
+        tabindex="-1"
+        class="nav-btn"
+        [disabled]="atStart()"
+        (click)="scrollBy(-1)"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          class="h-4 w-4"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+        >
+          <path d="M15 6 9 12l6 6" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+      <button
+        type="button"
+        tabindex="-1"
+        class="nav-btn"
+        [disabled]="atEnd()"
+        (click)="scrollBy(1)"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          class="h-4 w-4"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+        >
+          <path d="m9 6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <ul #track class="sf-rail m-0 list-none" (scroll)="onScroll()">
+    @for (asset of assets(); track asset.id; let i = $index) {
+      <li class="min-w-0">
+        <sf-video-card [asset]="asset" [rank]="ranked() ? i + 1 : null" />
+      </li>
+    }
+  </ul>
+
+  <!-- Edge fades hint at overflow without occluding a full card. -->
+  <div aria-hidden="true" class="edge-fade edge-fade--start" [class.opacity-0]="atStart()"></div>
+  <div aria-hidden="true" class="edge-fade edge-fade--end" [class.opacity-0]="atEnd()"></div>
+</section>

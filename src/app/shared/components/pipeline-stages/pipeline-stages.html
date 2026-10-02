@@ -1,0 +1,18 @@
+<ol class="pipeline">
+  @for (stage of stages(); track stage.title; let i = $index, last = $last) {
+    <li class="stage">
+      <div class="stage-card">
+        <span class="stage-index" aria-hidden="true">{{ i + 1 }}</span>
+        <h4 class="stage-title">{{ stage.title }}</h4>
+        <p class="stage-description">{{ stage.description }}</p>
+      </div>
+      @if (!last) {
+        <span class="stage-connector" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </span>
+      }
+    </li>
+  }
+</ol>

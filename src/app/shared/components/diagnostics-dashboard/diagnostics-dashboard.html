@@ -1,0 +1,36 @@
+@if (errorInfo(); as err) {
+  <div class="error-banner" role="alert">
+    <p class="text-sm font-semibold text-danger-400">Player error</p>
+    <p class="mt-1 text-xs leading-relaxed text-mist-300">{{ err.message }}</p>
+    <p class="mt-2 font-mono text-[0.6875rem] text-mist-500">
+      Error {{ err.code }} · {{ err.category }} · {{ err.severity }}
+    </p>
+  </div>
+}
+
+<div class="sections-grid">
+  @for (section of sections(); track section.heading) {
+    <section class="section-card">
+      <h3 class="section-heading">{{ section.heading }}</h3>
+      <dl class="stat-list">
+        @for (row of section.rows; track row.label) {
+          <div class="stat-row">
+            <dt>{{ row.label }}</dt>
+            <dd [class.font-mono]="row.mono" [class.text-xs]="row.mono">{{ row.value }}</dd>
+          </div>
+        }
+      </dl>
+    </section>
+  }
+</div>
+
+<div class="upcoming-note">
+  <p class="text-xs font-semibold tracking-wide text-mist-400 uppercase">A note on these numbers</p>
+  <p class="mt-1.5 text-xs leading-relaxed text-mist-500">
+    Every section above is either a reactive signal, a value sampled from Shaka's own snapshot APIs,
+    or a real browser capability check — nothing here is estimated or invented. No catalog title is
+    encrypted, so the DRM section's "Active key system" and "License server" rows will read
+    <span class="font-mono">—</span> for every title today; that's an honest reflection of what's
+    actually loaded, not a placeholder.
+  </p>
+</div>

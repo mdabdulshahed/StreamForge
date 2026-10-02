@@ -1,0 +1,57 @@
+:host {
+  display: contents;
+}
+
+/* Visible only once focused — the standard skip-link pattern. */
+.skip-link {
+  position: fixed;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 100;
+  padding: 0.5rem 0.875rem;
+  border-radius: 0.5rem;
+  background: var(--color-ember-500);
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transform: translateY(-200%);
+  transition: transform 0.2s var(--ease-out-soft);
+
+  &:focus-visible {
+    transform: translateY(0);
+  }
+}
+
+header {
+  /* Transparent by default so the hero reads full-bleed behind it. */
+  background: linear-gradient(to bottom, rgb(7 8 11 / 0.75), transparent);
+  border-bottom: 1px solid transparent;
+}
+
+header.is-scrolled {
+  background: color-mix(in srgb, var(--color-ink-950) 82%, transparent);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border-bottom-color: color-mix(in srgb, var(--color-mist-50) 8%, transparent);
+}
+
+.nav-link {
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-mist-300);
+  transition:
+    color 0.2s,
+    background-color 0.2s;
+
+  &:hover {
+    color: var(--color-mist-50);
+    background: color-mix(in srgb, var(--color-mist-50) 8%, transparent);
+  }
+
+  &.is-active {
+    color: var(--color-mist-50);
+    font-weight: 600;
+  }
+}

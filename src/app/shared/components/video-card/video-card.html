@@ -1,0 +1,71 @@
+<a
+  class="card group relative block rounded-card focus-visible:outline-offset-4"
+  [routerLink]="['/video', asset().id]"
+  [attr.aria-label]="linkLabel()"
+>
+  <div
+    class="relative aspect-video overflow-hidden rounded-card ring-1 ring-white/8 transition-[transform,box-shadow] duration-300 ease-(--ease-out-soft) group-hover:shadow-(--shadow-lift) group-focus-visible:shadow-(--shadow-lift)"
+  >
+    <sf-poster-art
+      class="art h-full w-full transition-transform duration-500 ease-(--ease-out-soft)"
+      [seed]="asset().id"
+      [title]="asset().title"
+      [src]="asset().poster"
+    />
+
+    <!-- Top-left status strip -->
+    <div class="pointer-events-none absolute top-2 left-2 flex items-center gap-1.5">
+      @if (asset().isLive) {
+        <span
+          class="inline-flex items-center gap-1 rounded-md bg-live-500 px-1.5 py-0.5 text-[0.625rem] font-bold tracking-wider text-white uppercase"
+        >
+          <span class="pulse h-1.5 w-1.5 rounded-full bg-white"></span>
+          Live
+        </span>
+      }
+      <sf-protocol-badge [protocol]="asset().type" />
+    </div>
+
+    <!-- Rank numeral for the trending rail -->
+    @if (rank() !== null) {
+      <span
+        aria-hidden="true"
+        class="pointer-events-none absolute right-2 bottom-1 font-black text-white/85 [-webkit-text-stroke:2px_rgba(0,0,0,.45)] text-[3.25rem] leading-none"
+      >
+        {{ rank() }}
+      </span>
+    }
+
+    <!-- Hover affordance -->
+    <div
+      aria-hidden="true"
+      class="pointer-events-none absolute inset-0 flex items-center justify-center bg-ink-950/45 opacity-0 backdrop-blur-[1px] transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100"
+    >
+      <span
+        class="grid h-11 w-11 translate-y-1 place-items-center rounded-full bg-mist-50 text-ink-950 shadow-lg transition-transform duration-300 ease-(--ease-out-soft) group-hover:translate-y-0"
+      >
+        <svg viewBox="0 0 24 24" class="ml-0.5 h-5 w-5" fill="currentColor">
+          <path
+            d="M8 5.14v13.72a1 1 0 0 0 1.5.86l11-6.86a1 1 0 0 0 0-1.72l-11-6.86A1 1 0 0 0 8 5.14Z"
+          />
+        </svg>
+      </span>
+    </div>
+  </div>
+
+  <div class="px-0.5 pt-2.5">
+    <h3
+      class="truncate text-[0.9375rem] leading-snug font-semibold text-mist-50 transition-colors group-hover:text-ember-400"
+    >
+      {{ asset().title }}
+    </h3>
+    <p class="mt-1 flex items-center gap-1.5 text-xs text-mist-400">
+      <span class="font-medium text-ok-400">{{ asset().matchScore }}% match</span>
+      <span aria-hidden="true" class="text-mist-500">·</span>
+      <span class="truncate">{{ meta() }}</span>
+    </p>
+    <p class="mt-0.5 text-xs text-mist-500">
+      {{ asset().durationSeconds | duration }}
+    </p>
+  </div>
+</a>

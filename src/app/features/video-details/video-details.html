@@ -1,0 +1,139 @@
+<article>
+  <!-- Backdrop -->
+  <div class="relative isolate">
+    <sf-poster-art
+      class="absolute inset-x-0 top-0 -z-10 h-112 sm:h-128"
+      [seed]="asset().id + '-hero'"
+      [title]="asset().title"
+      [src]="asset().poster"
+    />
+    <div
+      aria-hidden="true"
+      class="absolute inset-x-0 top-0 -z-10 h-112 bg-linear-to-t from-ink-950 via-ink-950/80 to-ink-950/40 sm:h-128"
+    ></div>
+
+    <div class="sf-gutter pt-24 sm:pt-32">
+      <nav aria-label="Breadcrumb" class="mb-6 text-xs text-mist-400">
+        <a routerLink="/" class="transition hover:text-mist-50">Home</a>
+        <span aria-hidden="true" class="mx-1.5">/</span>
+        <span class="text-mist-200">{{ asset().title }}</span>
+      </nav>
+
+      <div class="grid gap-8 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-12">
+        <!-- Poster -->
+        <sf-poster-art
+          class="aspect-video w-full rounded-card shadow-(--shadow-lift) ring-1 ring-white/10 lg:aspect-2/3"
+          [seed]="asset().id"
+          [title]="asset().title"
+          [src]="asset().poster"
+        />
+
+        <!-- Primary metadata -->
+        <div class="min-w-0">
+          <div class="flex flex-wrap items-center gap-2">
+            @if (asset().isLive) {
+              <span
+                class="inline-flex items-center gap-1.5 rounded-md bg-live-500 px-2 py-1 text-[0.6875rem] font-bold tracking-wider text-white uppercase"
+              >
+                <span class="h-1.5 w-1.5 rounded-full bg-white"></span> Live
+              </span>
+            }
+            <sf-protocol-badge [protocol]="asset().type" />
+            @for (label of categoryLabels(); track label) {
+              <span
+                class="rounded-md bg-white/8 px-2 py-0.5 text-[0.6875rem] font-medium text-mist-300"
+              >
+                {{ label }}
+              </span>
+            }
+          </div>
+
+          <h1 class="mt-3 text-3xl font-black tracking-tight sm:text-4xl lg:text-5xl">
+            {{ asset().title }}
+          </h1>
+
+          <p class="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-mist-300">
+            <span class="font-semibold text-ok-400">{{ asset().matchScore }}% match</span>
+            <span aria-hidden="true" class="text-mist-500">·</span>
+            <span>{{ asset().year }}</span>
+            <span aria-hidden="true" class="text-mist-500">·</span>
+            <span class="rounded border border-white/20 px-1.5 text-xs">{{ asset().rating }}</span>
+            <span aria-hidden="true" class="text-mist-500">·</span>
+            <span>{{ asset().durationSeconds | duration }}</span>
+            <span aria-hidden="true" class="text-mist-500">·</span>
+            <span>{{ asset().maxAdvertisedQuality }}</span>
+          </p>
+
+          <p class="mt-5 max-w-2xl leading-relaxed text-mist-200">{{ asset().synopsis }}</p>
+
+          <div class="mt-6 flex flex-wrap items-center gap-3">
+            <a
+              [routerLink]="['/player', asset().id]"
+              class="inline-flex items-center gap-2 rounded-lg bg-ember-500 px-6 py-3 text-sm font-semibold text-white transition hover:bg-ember-400 active:scale-[0.98]"
+            >
+              <svg viewBox="0 0 24 24" class="h-4 w-4" fill="currentColor" aria-hidden="true">
+                <path
+                  d="M8 5.14v13.72a1 1 0 0 0 1.5.86l11-6.86a1 1 0 0 0 0-1.72l-11-6.86A1 1 0 0 0 8 5.14Z"
+                />
+              </svg>
+              Watch now
+            </a>
+            <a
+              routerLink="/diagnostics"
+              class="inline-flex items-center gap-2 rounded-lg bg-white/8 px-5 py-3 text-sm font-semibold text-mist-100 ring-1 ring-white/12 transition hover:bg-white/14"
+            >
+              Stream diagnostics
+            </a>
+          </div>
+
+          <dl class="mt-8 grid gap-x-8 gap-y-3 text-sm sm:grid-cols-2">
+            <div class="sm:col-span-2">
+              <dt class="text-mist-500">Cast</dt>
+              <dd class="mt-0.5 text-mist-200">{{ asset().cast.join(', ') }}</dd>
+            </div>
+            <div>
+              <dt class="text-mist-500">Director</dt>
+              <dd class="mt-0.5 text-mist-200">{{ asset().director }}</dd>
+            </div>
+            <div>
+              <dt class="text-mist-500">Tags</dt>
+              <dd class="mt-0.5 text-mist-200">{{ asset().tags.join(' · ') }}</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Technical detail -->
+  <section class="sf-gutter mt-14" aria-labelledby="tech-heading">
+    <h2 id="tech-heading" class="text-lg font-semibold tracking-tight sm:text-xl">
+      Stream details
+    </h2>
+    <p class="mt-0.5 text-sm text-mist-400">
+      Declared by the catalog. Live measurements appear on the diagnostics dashboard during
+      playback.
+    </p>
+
+    <dl class="mt-4 grid gap-px overflow-hidden rounded-xl bg-white/8 sm:grid-cols-2">
+      @for (fact of facts(); track fact.label) {
+        <div class="bg-ink-900 px-4 py-3">
+          <dt class="text-xs tracking-wide text-mist-500 uppercase">{{ fact.label }}</dt>
+          <dd
+            class="mt-1 text-sm wrap-break-word text-mist-100"
+            [class.font-mono]="fact.mono"
+            [class.text-xs]="fact.mono"
+          >
+            {{ fact.value }}
+          </dd>
+        </div>
+      }
+    </dl>
+  </section>
+
+  @if (related().length) {
+    <div class="mt-12">
+      <sf-content-rail heading="More like this" [assets]="related()" />
+    </div>
+  }
+</article>

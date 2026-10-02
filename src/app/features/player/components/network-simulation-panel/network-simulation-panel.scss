@@ -1,0 +1,63 @@
+:host {
+  display: block;
+}
+
+.panel-heading {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.panel-subtitle {
+  margin-top: 0.375rem;
+  max-width: 40rem;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--color-mist-400);
+}
+
+.preset-list {
+  margin-top: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.preset-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  background: color-mix(in srgb, var(--color-ink-900) 70%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-mist-50) 8%, transparent);
+  color: var(--color-mist-200);
+  font-size: 0.8125rem;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease;
+
+  &:hover {
+    border-color: color-mix(in srgb, var(--color-mist-50) 20%, transparent);
+  }
+
+  &.is-active {
+    border-color: var(--color-ember-500);
+    background: color-mix(in srgb, var(--color-ember-500) 10%, transparent);
+  }
+}
+
+.preset-name {
+  font-weight: 600;
+  color: var(--color-mist-50);
+}
+
+.preset-detail {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.6875rem;
+  color: var(--color-mist-500);
+  white-space: nowrap;
+}

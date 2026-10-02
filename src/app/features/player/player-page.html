@@ -1,0 +1,113 @@
+<div class="sf-gutter pt-20 pb-4 sm:pt-24">
+  <div class="flex flex-wrap items-center gap-3">
+    <a
+      [routerLink]="['/video', asset().id]"
+      class="inline-flex items-center gap-1.5 text-sm text-mist-400 transition hover:text-mist-50"
+    >
+      <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M15 6 9 12l6 6" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+      Back to {{ asset().title }}
+    </a>
+
+    <sf-protocol-badge [protocol]="surface().player.protocol() ?? asset().type" />
+
+    @if (surface().player.isLive()) {
+      <span
+        class="inline-flex items-center gap-1.5 rounded-md bg-live-500 px-1.5 py-0.5 text-[0.625rem] font-bold tracking-wider text-white uppercase"
+      >
+        <span class="h-1.5 w-1.5 rounded-full bg-white"></span> Live
+      </span>
+    }
+
+    @if (surface().player.activeTrack(); as active) {
+      <span
+        class="inline-flex items-center gap-1.5 rounded-md bg-ink-800/80 px-2 py-0.5 font-mono text-[0.6875rem] text-mist-300 ring-1 ring-white/8"
+      >
+        @if (surface().player.abrEnabled()) {
+          <span class="font-semibold text-ember-400">AUTO</span>
+        }
+        {{ active.label }} · {{ formatMbps(active.bandwidth) }} Mbps
+      </span>
+    }
+
+    <button
+      type="button"
+      class="diagnostics-toggle ml-auto"
+      [class.is-active]="diagnosticsPanelOpen()"
+      [attr.aria-pressed]="diagnosticsPanelOpen()"
+      (click)="toggleDiagnosticsPanel()"
+    >
+      <svg viewBox="0 0 24 24" class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M3 3v18h18M7 15l4-6 3 3 5-8" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+      Diagnostics
+    </button>
+  </div>
+
+  <div
+    #shell
+    class="player-shell relative mt-4 aspect-video w-full overflow-hidden rounded-xl bg-black outline-none"
+    [class.controls-hidden]="!controlsVisible()"
+    tabindex="0"
+    role="group"
+    [attr.aria-label]="asset().title + ' video player'"
+    (pointermove)="notifyActivity()"
+    (pointerdown)="notifyActivity()"
+    (mouseleave)="onMouseLeave()"
+    (keydown)="onKeydown($event)"
+  >
+    <sf-video-surface [manifestUrl]="asset().manifestUrl" [poster]="asset().poster" />
+
+    @if (surface().player.loading()) {
+      <div class="status-overlay" aria-live="polite">
+        <span class="loading-spinner" aria-hidden="true"></span>
+        <p class="mt-3 text-sm text-mist-300">Loading manifest…</p>
+      </div>
+    } @else if (surface().player.error(); as err) {
+      <div class="status-overlay" role="alert">
+        <p class="text-sm font-medium text-mist-100">Unable to play this video.</p>
+        <p class="mt-2 max-w-sm text-center text-xs leading-relaxed text-mist-400">
+          {{ err.message }}
+        </p>
+        <p class="mt-3 font-mono text-[0.6875rem] text-mist-500">
+          Error {{ err.code }} · {{ err.category }} · {{ err.severity }}
+        </p>
+      </div>
+    }
+
+    <sf-control-bar
+      class="control-bar"
+      [state]="surface().events.state()"
+      [currentTime]="surface().events.currentTime()"
+      [duration]="surface().events.duration()"
+      [buffered]="surface().events.buffered()"
+      [volume]="surface().events.volume()"
+      [muted]="surface().events.muted()"
+      [playbackRate]="surface().events.playbackRate()"
+      [isFullscreen]="isFullscreen()"
+      [title]="asset().title"
+      [captionTracks]="surface().player.captionTracks()"
+      [activeCaptionTrack]="surface().player.activeCaptionTrack()"
+      [qualityTracks]="surface().player.tracks()"
+      [activeQualityTrack]="surface().player.activeTrack()"
+      [abrEnabled]="surface().player.abrEnabled()"
+      (playPauseToggle)="surface().togglePlay()"
+      (seek)="surface().seekTo($event)"
+      (volumeChange)="surface().setVolume($event)"
+      (muteToggle)="surface().toggleMute()"
+      (rateChange)="surface().setPlaybackRate($event)"
+      (fullscreenToggle)="toggleFullscreen()"
+      (captionToggle)="toggleCaptions()"
+      (selectQuality)="selectQuality($event)"
+    />
+  </div>
+
+  <p class="mt-3 text-[0.6875rem] text-mist-500">Source stream: {{ asset().sourceCredit }}</p>
+
+  @if (diagnosticsPanelOpen()) {
+    <div class="mt-4">
+      <sf-diagnostics-dashboard [session]="session()" />
+    </div>
+  }
+</div>

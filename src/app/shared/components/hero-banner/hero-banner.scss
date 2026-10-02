@@ -1,0 +1,42 @@
+:host {
+  display: block;
+}
+
+/* Tall enough to feel cinematic, capped so the rails below stay visible on
+   laptops. `dvh` keeps mobile browser chrome from cropping the CTA row. */
+.hero {
+  min-height: 26rem;
+  height: clamp(26rem, 76dvh, 46rem);
+}
+
+@media (min-width: 768px) {
+  .hero {
+    height: clamp(30rem, 82dvh, 50rem);
+  }
+}
+
+/* Vertical scrim blends the artwork into the page background beneath it. */
+.scrim-v {
+  background: linear-gradient(
+    to top,
+    var(--color-ink-950) 0%,
+    color-mix(in srgb, var(--color-ink-950) 82%, transparent) 18%,
+    transparent 62%
+  );
+}
+
+/* Horizontal scrim protects the copy without dimming the whole frame. */
+.scrim-h {
+  background: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--color-ink-950) 92%, transparent) 0%,
+    color-mix(in srgb, var(--color-ink-950) 62%, transparent) 42%,
+    transparent 78%
+  );
+}
+
+@media (max-width: 640px) {
+  .scrim-h {
+    background: color-mix(in srgb, var(--color-ink-950) 55%, transparent);
+  }
+}

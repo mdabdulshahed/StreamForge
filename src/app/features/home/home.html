@@ -1,0 +1,35 @@
+@if (hero(); as heroAsset) {
+  <sf-hero-banner [asset]="heroAsset" />
+}
+
+<div class="relative z-10 -mt-6 space-y-6 pb-4 sm:-mt-10 sm:space-y-8">
+  @if (loading()) {
+    <p class="sr-only" role="status">Loading catalog</p>
+    <sf-rail-skeleton />
+    <sf-rail-skeleton />
+  } @else {
+    @for (row of rows(); track row.collection.id) {
+      <sf-content-rail
+        [heading]="row.collection.label"
+        [subtitle]="row.collection.subtitle"
+        [assets]="row.assets"
+        [ranked]="isRanked(row.collection.id)"
+      />
+    }
+
+    <section class="sf-gutter pt-4" aria-labelledby="categories-heading" id="categories">
+      <h2 id="categories-heading" class="text-lg font-semibold tracking-tight sm:text-xl">
+        Browse by category
+      </h2>
+      <p class="mt-0.5 text-sm text-mist-400">Seven genres across {{ rows().length }} rails</p>
+
+      <ul class="mt-4 grid list-none grid-cols-2 gap-3 p-0 sm:grid-cols-3 lg:grid-cols-4">
+        @for (entry of categories(); track entry.category.id) {
+          <li [id]="'category-' + entry.category.id">
+            <sf-category-tile [category]="entry.category" [count]="entry.count" />
+          </li>
+        }
+      </ul>
+    </section>
+  }
+</div>

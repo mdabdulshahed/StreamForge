@@ -1,0 +1,26 @@
+<h3 class="panel-heading">Network simulation</h3>
+<p class="panel-subtitle">
+  Delays real segment responses to simulate degraded network conditions, so ABR's real bandwidth
+  estimate and quality decisions can be watched reacting to something genuine — not a fake number
+  layered on top of playback. Off by default; applies to this browser session only.
+</p>
+
+<div class="preset-list" role="radiogroup" aria-label="Simulated network condition">
+  @for (preset of presets; track preset.name) {
+    <button
+      type="button"
+      role="radio"
+      class="preset-button"
+      [class.is-active]="isActive(preset)"
+      [attr.aria-checked]="isActive(preset)"
+      (click)="select(preset)"
+    >
+      <span class="preset-name">{{ preset.name }}</span>
+      @if (preset.config.enabled) {
+        <span class="preset-detail">
+          {{ preset.config.maxBandwidthKbps }} kbps · {{ preset.config.latencyMs }} ms latency
+        </span>
+      }
+    </button>
+  }
+</div>
